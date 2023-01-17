@@ -1,0 +1,1 @@
+sudo docker run -d --name filebrowser -p 8081:8080 hurlenko/filebrowser
