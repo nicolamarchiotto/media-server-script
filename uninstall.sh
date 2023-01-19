@@ -20,3 +20,5 @@ rm -rf ~/radar
 rm -rf ~/qbittorrent
 rm -rf ~/filebrowser
 rm -rf ~/jackett
+
+sudo systemctl disable mystartup.service
