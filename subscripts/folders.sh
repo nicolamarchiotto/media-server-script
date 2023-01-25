@@ -11,9 +11,10 @@ fi
 if [ ! -d "~/media/shows" ] 
     then mkdir ~/media/shows 
 fi
-mkdir -p ~/jellyfin
-mkdir -p ~/sonar
-mkdir -p ~/radar
-mkdir -p ~/qbittorrent
-mkdir -p ~/filebrowser
-mkdir -p ~/jackett
+mkdir -p ~/dockers
+mkdir -p ~/dockers/jellyfin
+mkdir -p ~/dockers/sonar
+mkdir -p ~/dockers/radar
+mkdir -p ~/dockers/qbittorrent
+mkdir -p ~/dockers/filebrowser
+mkdir -p ~/dockers/jackett

@@ -7,7 +7,7 @@ sudo docker run -d \
   -p 8920:8920 `#optional` \
   -p 7359:7359/udp `#optional` \
   -p 1900:1900/udp `#optional` \
-  -v ~/jellyfin:/config \
+  -v ~/dockers/jellyfin:/config \
   -v ~/media/shows:/data/tvshows \
   -v ~/media/movies:/data/movies \
   --restart unless-stopped \

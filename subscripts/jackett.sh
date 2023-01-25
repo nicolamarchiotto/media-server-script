@@ -5,7 +5,7 @@ sudo docker run -d \
   -e TZ=Europe/Rome \
   -e AUTO_UPDATE=true `#optional` \
   -p 9117:9117 \
-  -v ~/jackett:/config \
+  -v ~/dockers/jackett:/config \
   -v ~/media:/downloads \
   --restart unless-stopped \
   lscr.io/linuxserver/jackett:latest

@@ -7,7 +7,7 @@ sudo docker run -d \
   -p 8080:8080 \
   -p 6881:6881 \
   -p 6881:6881/udp \
-  -v ~/qbittorrent:/config \
+  -v ~/dockers/qbittorrent:/config \
   -v ~/media:/downloads \
   --restart unless-stopped \
   lscr.io/linuxserver/qbittorrent:latest

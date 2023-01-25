@@ -11,14 +11,9 @@ sudo groupdel docker
 sudo rm -rf /var/run/docker.sock
 
 echo -e "\n"
-echo -e "Deleting folders except for media"
+echo -e "Deleting docker folders"
 echo -e "\n"
 
-rm -rf ~/jellyfin
-rm -rf ~/sonar
-rm -rf ~/radar
-rm -rf ~/qbittorrent
-rm -rf ~/filebrowser
-rm -rf ~/jackett
+rm -rf ~/dockers
 
 sudo systemctl disable mystartup.service

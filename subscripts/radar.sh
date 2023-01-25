@@ -4,7 +4,7 @@ sudo docker run -d \
   -e PGID=1000 \
   -e TZ=Europe/Rome \
   -p 7878:7878 \
-  -v ~/radar:/config \
+  -v ~/dockers/radar:/config \
   -v ~/media/movies:/movies `#optional` \
   -v ~/media:/downloads `#optional` \
   --restart unless-stopped \

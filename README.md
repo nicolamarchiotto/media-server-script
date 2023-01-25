@@ -26,7 +26,9 @@ Instructions fot radarr and sonarr to be set on web interface:
 - Set client (qbittorrent) download folder:
 - For radarr /downloads/movies, for sonarr /downloads/shows
 - Set indexers using jackett, check online tutorials
-
+- For sonarr use create tags to automatically retrieve episode with right criteria
+- For sonarr, pay attention to set an anime serie as type anime, and a tv show as standar type
+- For radarr do not set tags or custom profile, for each movie do a search and manually select the version to download
 The install.sh script set a service which will automatically turnoff the system at 01:30
 
 After the installation, update the system services: sudo systemctl daemon-reload 
