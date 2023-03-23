@@ -10,7 +10,7 @@ echo server install script
 ./subscripts/radar.sh
 ./subscripts/jackett.sh
 ./subscripts/filebrowser.sh
-./photoprism.sh
+./subscripts/photoprism.sh
 
 sudo ./subscripts/program_shutdown.sh
 
