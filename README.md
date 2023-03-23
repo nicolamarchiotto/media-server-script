@@ -16,6 +16,9 @@ radarr web interface        http://localhost:7878
 
 jackett web interface       http://localhost:9117
 
+photoprism web interface    http://localhost:2342
+default user:admin, default password: insecure
+
 The scipts creates a media folder, with a shows and a movies subdirectoris, in the user home
 If the folders already exist they will not be overwritten
 
@@ -57,6 +60,17 @@ To be set on web interface:
   
 - For radarr do not set tags or custom profile, for each movie do a search and manually select the version to download, it's easier
 
+# Photoprism
+Photoprism allows is a media manager for photos and videos
+Its purpose is to manage the media of different devices, mainly my phone
+It is possible to sync phone's media using the Photo Sync App, available for Android and IOS
+To sync with photoprism, it is necessary to purchase the NAS option in the Photo Sync App, 2€ at March 2023
+To set the server's endpoint for sync, access to the photo prism web interface settings->services->connect via webdav to rietreve 
+your server url, sync will work only in your local network unless you expose your ip to the network
+
+In the photo sync app, go to settings->configure endpoints
+For IOS there's an option for a photosync endpoint
+For Android you must select WebDAV, past the endpoint of the photoprism web page in the server field, the other fields should autocompile
 
 # Automatic shutdown
 The install.sh script set a service which will automatically turnoff the system at 01:30 am
