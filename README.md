@@ -1,6 +1,6 @@
 # media-server-script
 
-The install.sh script create a media server, list of services offered by dockers
+The install.sh script create a media server, list of containerized services
 
 qbittorrent web interface   http://localhost:8080
 default user:admin, default password:adminadmin
@@ -19,7 +19,7 @@ jackett web interface       http://localhost:9117
 photoprism web interface    http://localhost:2342
 default user:admin, default password: insecure
 
-The scipts creates a media folder, with a shows and a movies subdirectoris, in the user home
+The scipts creates a media folder in the user home, with a shows and a movies subdirectoris
 If the folders already exist they will not be overwritten
 
 Jellyfin will visualize media from these folders

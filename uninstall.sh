@@ -11,7 +11,7 @@ sudo groupdel docker
 sudo rm -rf /var/run/docker.sock
 
 echo -e "\n"
-echo -e "Deleting docker folders"
+echo -e "Deleting docker folder"
 echo -e "\n"
 
 rm -rf ~/dockers
