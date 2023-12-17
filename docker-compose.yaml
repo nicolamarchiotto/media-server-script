@@ -7,10 +7,10 @@ services:
     image:  hurlenko/filebrowser
     restart: unless-stopped
     ports:
-      - 8081:8080
+      - ${FILEBROWSER_PORT}:8080
     volumes:
       - ~:/data
-      - ~/dockers/filebrowser:/config
+      - ${DOCKER_CONFIGS_PATH}/filebrowser:/config
     networks:
       - medianetwork
 
@@ -20,14 +20,14 @@ services:
     image: lscr.io/linuxserver/jellyfin:latest
     restart: unless-stopped
     ports:
-      - 8096:8096
+      - ${JELLYFIN_PORT}:8096
       - 8920:8920
       - 7359:7359/udp
       - 1900:1900/udp
     volumes:
-      - ~/dockers/jellyfin:/config
-      - ~/media/shows:/data/tvshows
-      - ~/media/movies:/data/movies
+      - ${DOCKER_CONFIGS_PATH}/jellyfin:/config
+      - ${SHOWS_FOLDER}:/data/tvshows
+      - ${MOVIES_FOLDER}:/data/movies
     environment:
       - PUID=1000
       - PGID=1000
@@ -45,10 +45,10 @@ services:
       - TZ=Europe/Rome
       - AUTO_UPDATE=true #optional
     volumes:
-      - ~/dockers/jackett:/config
-      - ~/media:/downloads
+      - ${DOCKER_CONFIGS_PATH}/jackett:/config
+      # - ${MEDIA_FOLDER}:/downloads
     ports:
-      - 9117:9117
+      - ${JACKETT_PORT}:9117
     restart: unless-stopped
     networks:
       - medianetwork
@@ -59,10 +59,10 @@ services:
     image:  photoprism/photoprism:latest
     restart: unless-stopped
     ports:
-      - 2342:2342
+      - ${PHOTOPRISM_PORT}:2342
     volumes:
-      - ~/dockers/photoprism:/photoprism/storage
-      - ~/Pictures:/photoprism/originals
+      - ${DOCKER_CONFIGS_PATH}/photoprism:/photoprism/storage
+      - ${PICTURES_FOLDER}:/photoprism/originals
     environment:
       - PHOTOPRISM_UPLOAD_NSFW = "true"
       - PHOTOPRISM_ADMIN_PASSWORD = "insecure" 
@@ -78,11 +78,11 @@ services:
       - PGID=1000
       - TZ=Europe/Rome
     volumes:
-      - ~/dockers/sonar:/config
-      - ~/media/shows:/tv #optional
-      - ~/media:/downloads #optional
+      - ${DOCKER_CONFIGS_PATH}/sonar:/config
+      - ${SHOWS_FOLDER}:/tv #optional
+      - ${MEDIA_FOLDER}:/downloads #optional
     ports:
-      - 8989:8989
+      - ${SONARR_PORT}:8989
     restart: unless-stopped
     networks:
       - medianetwork
@@ -96,11 +96,11 @@ services:
       - PGID=1000
       - TZ=Europe/Rome
     volumes:
-      - ~/dockers/radar:/config
-      - ~/media/movies:/movies # optional 
-      - ~/media:/downloads  # optional
+      - ${DOCKER_CONFIGS_PATH}/radar:/config
+      - ${MOVIES_FOLDER}:/movies # optional 
+      - ${MEDIA_FOLDER}:/downloads  # optional
     ports:
-      - 7878:7878
+      - ${RADARR_PORT}:7878
     restart: unless-stopped
     networks:
       - medianetwork
@@ -115,27 +115,34 @@ services:
       - TZ=Europe/Rome
       - WEBUI_PORT=8080
     volumes:
-      - ~/dockers/qbittorrent:/config 
-      - ~/media:/downloads
+      - ${DOCKER_CONFIGS_PATH}/qbittorrent:/config 
+      - ${MEDIA_FOLDER}:/downloads
     ports:
-      - 8080:8080
+      - ${QBITTORRENT_PORT}:8080
       - 6881:6881
       - 6881:6881/udp
     restart: unless-stopped
     networks:
       - medianetwork
   
-  # HOMER to test with assets file
-  # homer:
-  #   image: b4bz/homer:latest
-  #   container_name: homer
-  #   ports:
-  #     - 8082:8080
-  #   volumes:
-  #     - ./homer/assets/:/www/assets
-  #   restart: unless-stopped
-  #   networks:
-  #     - medianetwork
+  homer:
+    image: b4bz/homer:latest
+    container_name: homer
+    ports:
+      - ${HOMER_PORT}:8080
+    volumes:
+      - ./homer-config/assets/:/www/assets
+    restart: unless-stopped
+    networks:
+      - medianetwork
+    depends_on:
+      - qbittorrent
+      - filebrowser
+      - jackett
+      - radarr
+      - sonarr
+      - jellyfin
+      - photoprism
 
 # NETWORK DEFINITION
 networks:
