@@ -36,30 +36,30 @@ services:
   items:
   - logo: assets/tools/jellyfin.svg
     name: Jellyfin
-    url: http://192.168.0.104:8096/web/index.html#!/home.html
+    url: http://localhost:8096/web/index.html#!/home.html
   - logo: assets/tools/sonarr.png
     name: Sonarr
-    url: http://192.168.0.104:8989/
+    url: http://localhost:8989/
   - logo: assets/tools/radarr.png
     name: Radarr
-    url: http://192.168.0.104:7878/
+    url: http://localhost:7878/
   name: Media
 - icon: fas fa-cloud
   items:
   - logo: assets/tools/qbittorrent.png
     name: qBittorrent
-    url: http://192.168.0.104:8080
+    url: http://localhost:8080
   - logo: assets/tools/filebrowser.png
     name: File Browser
-    url: http://192.168.0.104:8081/files/
+    url: http://localhost:8081/files/
   - logo: assets/tools/jackett.png
     name: Jackett
-    url: http://192.168.0.104:9117/
+    url: http://localhost:9117/
   name: Services
 - icon: fas fa-database
   items:
   - logo: assets/tools/photoprism.jpg
     name: Photoprism
-    url: http://192.168.0.104:2342/library/browse
+    url: http://localhost:2342/library/browse
   name: Storage
 theme: default

@@ -14,6 +14,6 @@ echo -e "\n"
 echo -e "Deleting docker folder"
 echo -e "\n"
 
-rm -rf ~/dockers
+rm -rf ~/dockers_configs
 
 sudo systemctl disable mystartup.service

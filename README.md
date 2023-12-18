@@ -1,30 +1,44 @@
-# media-server-script
+# Home Media Server
 
-The install.sh script create a media server, list of containerized services
+Code for automaically setup a home media server with contanairized services. The web UIs can accessed from an unique page, by default on localhost:8082
 
-qbittorrent web interface   http://localhost:8080
-default user:admin, default password:adminadmin
+## List of all the servicses
 
-filebrowser web interface   http://localhost:8081
-default user:admin, default password:admin
+| Services    | Default port | Default Credentials  | Involved Folders                 |
+|-------------|:------------:|---------------------:|--------------------------------:|
+| Homer       | 8082         |                      |                                 |
+| qBitTorrent | 8080         | admin, adminadmin    | ~/media                         |
+| Filebrowser | 8081         | admin, admin         | /                               |
+| Jellyfin    | 8096         |                      | ~/media/shows, ~/media/movies   |
+| Sonarr      | 8989         |                      |                                 |
+| Radarr      | 7878         |                      |                                 |
+| Jackett     | 9117         |                      |                                 |
+| Photoprism  | 2342         | admin, insecure      | ~/Pictures                      |
 
-jellyfin web interface      http://localhost:8096
 
-sonarr web interface        http://localhost:8989
+## install.sh
 
-radarr web interface        http://localhost:7878
+To change the port configuration, do not edit the docker-compose.yml file directly. Edit the .env file instead. Be carefull to not introduce new lines in the .env file
 
-jackett web interface       http://localhost:9117
+The install.sh script perform the following actions
 
-photoprism web interface    http://localhost:2342
-default user:admin, default password: insecure
+- Install openssh-server if not already installed on the system
+- Install docker engine
+- runs the edit edit_homer_config.py python script, install PyYAML as prerequisites
+  - The script retrieve the docker condfiguration from the .env file and edits the Homer config.yml file accordingly
+- create a service which will automatically turnoff the system at 01:30 am, might need to reboot manually to apply the changes
+- creates all the containers from the docker-compose.yml
 
-The scipts creates a media folder in the user home, with a shows and a movies subdirectoris
-If the folders already exist they will not be overwritten
+## uninstall.sh
+To uninstall run unistall.sh, docker and shh will be removed
 
-Jellyfin will visualize media from these folders
+The media folder will be mantained when running uninstall.sh
 
-# Radarr and Sonarr
+The service for automatic shutdown will be disabled and removed
+
+# Setup Notes
+
+## Radarr and Sonarr
 
 To be set on web interface:
 - Set client torrent as qbittorrent, address is localhost:8080, credentials admin-adminadmin
@@ -60,8 +74,8 @@ To be set on web interface:
   
 - For radarr do not set tags or custom profile, for each movie do a search and manually select the version to download, it's easier
 
-# Photoprism
-Photoprism allows is a media manager for photos and videos
+## Photoprism
+Photoprism is a media manager for photos and videos
 Its purpose is to manage the media of different devices, mainly my phone
 It is possible to sync phone's media using the Photo Sync App, available for Android and IOS
 To sync with photoprism, it is necessary to purchase the NAS option in the Photo Sync App, 2€ at March 2023
@@ -71,17 +85,3 @@ your server url, sync will work only in your local network unless you expose you
 In the photo sync app, go to settings->configure endpoints
 For IOS there's an option for a photosync endpoint
 For Android you must select WebDAV, past the endpoint of the photoprism web page in the server field, the other fields should autocompile
-
-# Automatic shutdown
-The install.sh script set a service which will automatically turnoff the system at 01:30 am
-
-After the installation, change take place if command `update the system services: sudo systemctl daemon-reload` is run
-
-If not changes will take place after restart
-
-# Uninstall
-To uninstall run unistall.sh, docker and shh will be removed
-
-The media folder will be mantained when running uninstall.sh
-
-The service for automatic shutdown will be disabled and removed
