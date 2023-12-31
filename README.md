@@ -1,20 +1,21 @@
 # Home Media Server
 
-Code for automaically setup a home media server with contanairized services. The web UIs can accessed from an unique page, by default on localhost:8082
+Code for automaically setup a home media server with contanairized services. 
+The web UIs can accessed from an unique page, by default on localhost:8082
 
 ## List of all the servicses
 
-| Services    | Default port | Default Credentials  | Involved Folders                 |
-|-------------|:------------:|---------------------:|--------------------------------:|
-| Homer       | 8082         |                      |                                 |
-| qBitTorrent | 8080         | admin, adminadmin    | ~/media                         |
-| Filebrowser | 8081         | admin, admin         | /                               |
-| Jellyfin    | 8096         |                      | ~/media/shows, ~/media/movies   |
-| Sonarr      | 8989         |                      |                                 |
-| Radarr      | 7878         |                      |                                 |
-| Jackett     | 9117         |                      |                                 |
-| Photoprism  | 2342         | admin, insecure      | ~/Pictures                      |
-
+| Services    | Default port | Default Credentials            | Used Folders                    | Base Image                                         |
+|-------------|:------------:|-------------------------------:|--------------------------------:|---------------------------------------------------:|
+| Homer       | 8082         |                                |                                 | b4bz/homer:v23.10.1                                |
+| qBitTorrent | 8080         | admin, *tmp pw in docker logs* | $MEDIA_FOLDER                   | lscr.io/linuxserver/qbittorrent:4.6.2-libtorrentv1 | 
+| Filebrowser | 8081         | admin, admin                   | $MEDIA_FOLDER                   | hurlenko/filebrowser:v2.26.0                       | 
+| Jellyfin    | 8096         |                                | $SHOWS_FOLDER, $MOVIES_FOLDER   | lscr.io/linuxserver/jellyfin:10.8.13               | 
+| Sonarr      | 8989         |                                | $SHOWS_FOLDER                   | lscr.io/linuxserver/sonarr:4.0.0                   | 
+| Radarr      | 7878         |                                | $MOVIES_FOLDER                  | lscr.io/linuxserver/radarr:5.2.6                   | 
+| Jackett     | 9117         |                                |                                 | lscr.io/linuxserver/jackett:0.21.1448              | 
+| Photoprism  | 2342         | admin, insecure                | $PICTURES_FOLDER                | photoprism/photoprism:231128                       | 
+ 
 
 ## install.sh
 
@@ -26,7 +27,7 @@ The install.sh script perform the following actions
 - Install docker engine
 - runs the edit edit_homer_config.py python script, install PyYAML as prerequisites
   - The script retrieve the docker condfiguration from the .env file and edits the Homer config.yml file accordingly
-- create a service which will automatically turnoff the system at 01:30 am, might need to reboot manually to apply the changes
+- create a service which will **automatically turnoff the system at 01:30 am**, might need to reboot manually to apply the changes
 - creates all the containers from the docker-compose.yml
 
 ## uninstall.sh
