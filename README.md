@@ -26,7 +26,7 @@ The install.sh script perform the following actions
 - Install docker engine
 - runs the edit edit_homer_config.py python script, install PyYAML as prerequisites
   - The script retrieve the docker condfiguration from the .env file and edits the Homer config.yml file accordingly
-- create a service which will automatically turnoff the system at 01:30 am, might need to reboot manually to apply the changes
+- create a service which will **automatically turnoff the system at 01:30 am**, might need to reboot manually to apply the changes
 - creates all the containers from the docker-compose.yml
 
 ## uninstall.sh
