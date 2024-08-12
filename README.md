@@ -1,12 +1,12 @@
 # Home Media Server
 
-Code for automaically setup a home media server with contanairized services. The web UIs can accessed from an unique page, by default on localhost:8082
+Code for automaically setup a home media server with contanairized services. The web UIs can accessed from an unique page, by default on localhost:80
 
 ## List of all the servicses
 
-| Services    | Default port | Default Credentials  | Involved Folders                 |
+| Services    | Default port | Default Credentials  | Involved Folders                |
 |-------------|:------------:|---------------------:|--------------------------------:|
-| Homer       | 8082         |                      |                                 |
+| Homer       | 80           |                      |                                 |
 | qBitTorrent | 8080         | admin, adminadmin    | ~/media                         |
 | Filebrowser | 8081         | admin, admin         | /                               |
 | Jellyfin    | 8096         |                      | ~/media/shows, ~/media/movies   |
@@ -14,7 +14,7 @@ Code for automaically setup a home media server with contanairized services. The
 | Radarr      | 7878         |                      |                                 |
 | Jackett     | 9117         |                      |                                 |
 | Photoprism  | 2342         | admin, insecure      | ~/Pictures                      |
-
+| Pihole      | 8084         | pihole               |                                 |
 
 ## install.sh
 
@@ -30,6 +30,7 @@ The install.sh script perform the following actions
 - creates all the containers from the docker-compose.yml
 
 ## uninstall.sh
+
 To uninstall run unistall.sh, docker and shh will be removed
 
 The media folder will be mantained when running uninstall.sh
@@ -37,6 +38,12 @@ The media folder will be mantained when running uninstall.sh
 The service for automatic shutdown will be disabled and removed
 
 # Setup Notes
+
+## Homer
+
+Web UI for quickly access the server services. If the .env variable DNS_ENTRY is set, the link will redirect to DNS_ENTRY:SERVICE_PORT. If not, the link will point to IP:SERVICE_PORT
+
+To set your local dns, use Pihole, further instructions below.
 
 ## Radarr and Sonarr
 
@@ -85,3 +92,11 @@ your server url, sync will work only in your local network unless you expose you
 In the photo sync app, go to settings->configure endpoints
 For IOS there's an option for a photosync endpoint
 For Android you must select WebDAV, past the endpoint of the photoprism web page in the server field, the other fields should autocompile
+
+## Pihole
+
+Follow the installations steps of the official [github repo](https://github.com/pi-hole/docker-pi-hole/?tab=readme-ov-file#installing-on-ubuntu-or-fedora)
+
+Under the Local DNS -> DNS Records create an entry for your server host system. The domain name should be under the form of www.yourName.local
+
+Remember to set your server endpoint as a dns option in your modem router.
