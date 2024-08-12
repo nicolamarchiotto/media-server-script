@@ -100,3 +100,5 @@ Follow the installations steps of the official [github repo](https://github.com/
 Under the Local DNS -> DNS Records create an entry for your server host system. The domain name should be under the form of www.yourName.local
 
 Remember to set your server endpoint as a dns option in your modem router.
+
+Usefull block list can be found [here](https://firebog.net/)
