@@ -36,15 +36,6 @@ services:
   items:
   - logo: assets/tools/jellyfin.svg
     name: Jellyfin
-<<<<<<< HEAD
-    url: http://192.168.0.200:8096/web/index.html#!/home.html
-  - logo: assets/tools/sonarr.png
-    name: Sonarr
-    url: http://192.168.0.200:8989/
-  - logo: assets/tools/radarr.png
-    name: Radarr
-    url: http://192.168.0.200:7878/
-=======
     url: http://server.local:8096/web/index.html#!/home.html
   - logo: assets/tools/sonarr.png
     name: Sonarr
@@ -52,21 +43,11 @@ services:
   - logo: assets/tools/radarr.png
     name: Radarr
     url: http://server.local:7878/
->>>>>>> compose
   name: Media
 - icon: fas fa-cloud
   items:
   - logo: assets/tools/qbittorrent.png
     name: qBittorrent
-<<<<<<< HEAD
-    url: http://192.168.0.200:8080
-  - logo: assets/tools/filebrowser.png
-    name: File Browser
-    url: http://192.168.0.200:8081/files/
-  - logo: assets/tools/jackett.png
-    name: Jackett
-    url: http://192.168.0.200:9117/
-=======
     url: http://server.local:8080
   - logo: assets/tools/jackett.png
     name: Jackett
@@ -74,19 +55,14 @@ services:
   - logo: assets/tools/pihole.png
     name: Pihole
     url: http://server.local:8084/admin
->>>>>>> compose
   name: Services
 - icon: fas fa-database
   items:
   - logo: assets/tools/photoprism.jpg
     name: Photoprism
-<<<<<<< HEAD
-    url: http://192.168.0.200:2342/library/browse
-=======
     url: http://server.local:2342/library/browse
   - logo: assets/tools/filebrowser.png
     name: File Browser
     url: http://server.local:8081/files/
->>>>>>> compose
   name: Storage
 theme: default
