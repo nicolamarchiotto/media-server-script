@@ -1,27 +1,5 @@
 # Home Media Server
 
-<<<<<<< HEAD
-Code for automaically setup a home media server with containerized services. <br>
-The web UIs can accessed from an unique page, by default on localhost:8082
-
-## List of all the servicses
-
-| Services    | Default port | Default Credentials            | Folders of Interest (.env)      | Base Image                                         |
-|-------------|:------------:|-------------------------------:|--------------------------------:|---------------------------------------------------:|
-| Homer       | 8082         |                                |                                 | b4bz/homer:v23.10.1                                |
-| qBitTorrent | 8080         | admin, *tmp pw in docker logs* | $MEDIA_FOLDER                   | lscr.io/linuxserver/qbittorrent:4.6.2-libtorrentv1 | 
-| Filebrowser | 8081         | admin, admin                   | $MEDIA_FOLDER                   | hurlenko/filebrowser:v2.26.0                       | 
-| Jellyfin    | 8096         |                                | $SHOWS_FOLDER, $MOVIES_FOLDER   | lscr.io/linuxserver/jellyfin:10.8.13               | 
-| Sonarr      | 8989         |                                | $SHOWS_FOLDER                   | lscr.io/linuxserver/sonarr:4.0.0                   | 
-| Radarr      | 7878         |                                | $MOVIES_FOLDER                  | lscr.io/linuxserver/radarr:5.2.6                   | 
-| Jackett     | 9117         |                                |                                 | lscr.io/linuxserver/jackett:0.21.1448              | 
-| Photoprism  | 2342         | admin, insecure                | $PICTURES_FOLDER                | photoprism/photoprism:231128                       | 
- 
-
-# install.sh
-**Change the port configuration using the .env file, do not edit the docker-compose.yml file directly.**<br>
-Be carefull to not introduce new lines in the .env file
-=======
 Code for automaically setup a home media server with contanairized services. The web UIs can accessed from an unique page, by default on localhost:80
 
 ## List of all the servicses
@@ -41,7 +19,6 @@ Code for automaically setup a home media server with contanairized services. The
 ## install.sh
 
 To change the port configuration, do not edit the docker-compose.yml file directly. Edit the .env file instead. Be carefull to not introduce new lines in the .env file
->>>>>>> compose
 
 The install.sh script perform the following actions
 
@@ -53,14 +30,9 @@ The install.sh script perform the following actions
 - creates all the containers from the docker-compose.yml
 
 ## uninstall.sh
-<<<<<<< HEAD
-- To uninstall run unistall.sh, docker and shh will be removed
-- The media folder will be mantained when running uninstall.sh
-- The service for automatic shutdown will be disabled and removed
-=======
+
 
 To uninstall run unistall.sh, docker and shh will be removed
->>>>>>> compose
 
 ## HW setup
 - Script was tested with ubunru 22.04.03 LTS server
@@ -112,11 +84,7 @@ To sync with photoprism, it is necessary to purchase the NAS option in the Photo
 To set the server's endpoint for sync, access to the photo prism web interface settings->services->connect via webdav to rietreve 
 your server url. Sync will work only in your local network unless you expose your ip to the network
 
-<<<<<<< HEAD
-In the Photo Sync App, go to settings->configure endpoints.<br>
-For IOS there's an option for a photosync endpoint.<br>
-For Android you must select WebDAV, past the endpoint of the photoprism web page in the server field, the other fields should autocompile
-=======
+
 In the photo sync app, go to settings->configure endpoints
 For IOS there's an option for a photosync endpoint
 For Android you must select WebDAV, past the endpoint of the photoprism web page in the server field, the other fields should autocompile
@@ -130,4 +98,3 @@ Under the Local DNS -> DNS Records create an entry for your server host system. 
 Remember to set your server endpoint as a dns option in your modem router.
 
 Usefull block list can be found [here](https://firebog.net/)
->>>>>>> compose

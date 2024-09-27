@@ -20,11 +20,7 @@ services:
   # JELLYFIN
   jellyfin:
     container_name: jellyfin
-<<<<<<< HEAD
-    image: lscr.io/linuxserver/jellyfin:10.8.13
-=======
     image: lscr.io/linuxserver/jellyfin:10.9.7
->>>>>>> compose
     restart: unless-stopped
     ports:
       - ${JELLYFIN_PORT}:8096
