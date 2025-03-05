@@ -81,13 +81,20 @@ To be set on web interface:
 Photoprism is a media manager for photos and videos.<br>
 It is possible to sync a phone's media using the Photo Sync App, available for Android and IOS
 To sync with photoprism, it is necessary to purchase the NAS option in the Photo Sync App, 2€ at March 2023.<br>
+
+### WebDav
+
 To set the server's endpoint for sync, access to the photo prism web interface settings->services->connect via webdav to rietreve 
 your server url. Sync will work only in your local network unless you expose your ip to the network
-
 
 In the photo sync app, go to settings->configure endpoints
 For IOS there's an option for a photosync endpoint
 For Android you must select WebDAV, past the endpoint of the photoprism web page in the server field, the other fields should autocompile
+
+### PhotoPrism endpoint - 05/03/2025
+
+In photosync app, go to settings->configure PhotoPrism
+Enter endpoint, port, credentials and destination folder
 
 ## Pihole
 
