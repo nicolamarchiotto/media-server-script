@@ -1,4 +1,6 @@
 venv
 storage
 database
-pihole-steps.txt
+.env
+homer-config/assets/config.yml
+homer-config/assets/backup.yml

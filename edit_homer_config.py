@@ -18,14 +18,6 @@ with open(homer_file_path, "r") as file:
     data = yaml.safe_load(file)
 
 # Updating the URL field in the services section
-
-endpoint = ''
-if 'DNS_ENTRY' in config_values:
-    endpoint = 'http://'+str(config_values["DNS_ENTRY"])
-else:
-    endpoint = 'http://'+str(config_values["IP"])
-
-
 if "services" in data:
     for group in data["services"]:
         if "items" in group:
@@ -33,21 +25,23 @@ if "services" in data:
                 if "url" in service:
                     name = service["name"]
                     if name == "Jellyfin":
-                        service["url"] = endpoint+":"+str(config_values["JELLYFIN_PORT"])+"/web/index.html#!/home.html"
+                        service["url"] = str(config_values["JELLYFIN_URL"])
                     elif name == "Sonarr":
-                        service["url"] = endpoint+":"+str(config_values["SONARR_PORT"])+"/"
+                        service["url"] = str(config_values["SONARR_URL"])
                     elif name == "Radarr":
-                        service["url"] = endpoint+":"+str(config_values["RADARR_PORT"])+"/"
+                        service["url"] = str(config_values["RADARR_URL"])
                     elif name == "qBittorrent":
-                        service["url"] = endpoint+":"+str(config_values["QBITTORRENT_PORT"])
+                        service["url"] = str(config_values["QBITTORRENT_URL"])
                     elif name == "File Browser":
-                        service["url"] = endpoint+":"+str(config_values["FILEBROWSER_PORT"])+"/files/"
+                        service["url"] = str(config_values["FILEBROWSER_URL"])
                     elif name == "Jackett":
-                        service["url"] = endpoint+":"+str(config_values["JACKETT_PORT"])+"/"
+                        service["url"] = str(config_values["JACKETT_URL"])
                     elif name == "Photoprism":
-                        service["url"] = endpoint+":"+str(config_values["PHOTOPRISM_PORT"])+"/library/browse"
+                        service["url"] = str(config_values["PHOTOPRISM_URL"])
                     elif name == "Pihole":
-                        service["url"] = endpoint+":"+str(config_values["PIHOLE_PORT"])+"/admin"
+                        service["url"] = str(config_values["PIHOLE_URL"])
+                    elif name == "NPM":
+                        service["url"] = str(config_values["NPM_URL"])
                     else:
                         print("Unmanaged case, exit", name)
                         exit()

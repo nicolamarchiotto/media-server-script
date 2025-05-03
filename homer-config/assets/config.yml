@@ -25,6 +25,7 @@ colors:
     text-header: '#ffffff'
     text-subtitle: '#424242'
     text-title: '#303030'
+columns: '4'
 header: false
 links:
 - icon: fas fa-book
@@ -36,33 +37,39 @@ services:
   items:
   - logo: assets/tools/jellyfin.svg
     name: Jellyfin
-    url: http://server.local:8096/web/index.html#!/home.html
+    url: https://jellyfin.ziapo.duckdns.org
   - logo: assets/tools/sonarr.png
     name: Sonarr
-    url: http://server.local:8989/
+    url: https://sonarr.ziapo.duckdns.org
   - logo: assets/tools/radarr.png
     name: Radarr
-    url: http://server.local:7878/
+    url: https://radarr.ziapo.duckdns.org
   name: Media
 - icon: fas fa-cloud
   items:
   - logo: assets/tools/qbittorrent.png
     name: qBittorrent
-    url: http://server.local:8080
+    url: https://qbittorrent.ziapo.duckdns.org
   - logo: assets/tools/jackett.png
     name: Jackett
-    url: http://server.local:9117/
+    url: https://jackett.ziapo.duckdns.org
+  name: Services
+- icon: fas fa-network-wired
+  items:
+  - logo: assets/tools/npm.png
+    name: NPM
+    url: https://ziapo.duckdns.org
   - logo: assets/tools/pihole.png
     name: Pihole
-    url: http://server.local:8084/admin
-  name: Services
+    url: https://pihole.ziapo.duckdns.org
+  name: Networking
 - icon: fas fa-database
   items:
   - logo: assets/tools/photoprism.jpg
     name: Photoprism
-    url: http://server.local:2342/library/browse
+    url: https://photoprism.ziapo.duckdns.org
   - logo: assets/tools/filebrowser.png
     name: File Browser
-    url: http://server.local:8081/files/
+    url: https://filebrowser.ziapo.duckdns.org
   name: Storage
 theme: default
