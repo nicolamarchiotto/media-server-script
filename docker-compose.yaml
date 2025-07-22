@@ -18,6 +18,10 @@ services:
     container_name: jellyfin
     image: lscr.io/linuxserver/jellyfin:latest
     restart: unless-stopped
+    group_add:
+      - '109'
+    devices:
+      - /dev/dri/renderD129:/dev/dri/renderD129
     ports:
       - ${JELLYFIN_PORT}:8096
       - 8920:8920
@@ -34,7 +38,7 @@ services:
   
   #JACKETT
   jackett:
-    image: lscr.io/linuxserver/jackett:0.21.1448
+    image: lscr.io/linuxserver/jackett:latest
     container_name: jackett
     environment:
       - PUID=1000
@@ -196,3 +200,7 @@ services:
     environment:
       INITIAL_ADMIN_EMAIL: admin@example.com
       INITIAL_ADMIN_PASSWORD: mypassword1
+
+networks:
+  default:
+    enable_ipv6: false
