@@ -13,15 +13,16 @@ Code for automaically setup a home media server with contanairized services. Web
 | Services    | Default port | Default Credentials  | Involved Folders                |
 |-------------|:------------:|---------------------:|--------------------------------:|
 | Homer       | 8080         |                      |                                 |
-| qBitTorrent | 8090         | admin, adminadmin    | ~/media                         |
+| qBitTorrent | 8090         | admin, adminadmin    | ${MEDIA_FOLDER}$                         |
 | Filebrowser | 8084         | admin, admin         | /                               |
-| Jellyfin    | 8096         |                      | ~/media/shows, ~/media/movies   |
+| Jellyfin    | 8096         |                      | ${SHOWS_FOLDER}, ${MOVIES_FOLDER} |
 | Sonarr      | 8989         |                      |                                 |
 | Radarr      | 7878         |                      |                                 |
 | Jackett     | 9117         |                      |                                 |
-| Photoprism  | 2342         | admin, insecure      | ~/Pictures                      |
+| Photoprism  | 2342         | admin, insecure      | ${PICTURES_FOLDER}              |
 | Pihole      | 8085         | pihole               |                                 |
-| NPM         | 81           | admin@example.com, changeme               |            |
+| NPM         | 81           | admin@example.com, changeme |                          |
+| urbackup    | 55414        |                      | {URBACKUPS_PATH}                |
 
 ## install.sh
 
@@ -75,6 +76,10 @@ To be set on web interface:
 Photoprism is a media manager for photos and videos.<br>
 It is possible to sync a phone's media using the Photo Sync App, available for Android and IOS
 To sync with photoprism, it is necessary to purchase the NAS option in the Photo Sync App, 2€ at March 2023.<br>
+
+## UrBackup
+
+Solution for automating backups. Can be used both for files and full windows images. I use it for automatically backup some folders on my windows installation on the server. 
 
 ### WebDav
 
