@@ -71,5 +71,8 @@ services:
   - logo: assets/tools/filebrowser.png
     name: File Browser
     url: https://filebrowser.ziapo.duckdns.org
+  - logo: assets/tools/urbackup.png
+    name: UrBackup
+    url: https://urbackup.ziapo.duckdns.org
   name: Storage
 theme: default

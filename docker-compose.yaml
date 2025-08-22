@@ -200,6 +200,21 @@ services:
     environment:
       INITIAL_ADMIN_EMAIL: admin@example.com
       INITIAL_ADMIN_PASSWORD: mypassword1
+      
+  urbackup:
+    image: uroni/urbackup-server:latest
+    container_name: urbackup
+    restart: unless-stopped
+    environment:
+      - PUID=1000 
+      - PGID=100  
+      - TZ=Europe/Rome
+    ports:
+      - "${URBACKUP_PORT}:55414"
+    volumes:
+      - ${DOCKER_CONFIGS_PATH}/urbackup:/var/urbackup
+      - ${URBACKUPS_PATH}:/backups
+    network_mode: "host"
 
 networks:
   default:

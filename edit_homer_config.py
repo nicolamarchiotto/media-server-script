@@ -42,6 +42,8 @@ if "services" in data:
                         service["url"] = str(config_values["PIHOLE_URL"])
                     elif name == "NPM":
                         service["url"] = str(config_values["NPM_URL"])
+                    elif name == "urbackup":
+                        service["url"] = str(config_values["URBACKUP_URL"])
                     else:
                         print("Unmanaged case, exit", name)
                         exit()
