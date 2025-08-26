@@ -65,7 +65,7 @@ services:
     volumes:
       - ${DOCKER_CONFIGS_PATH}/photoprism:/photoprism/storage
       - ${PICTURES_FOLDER}:/photoprism/originals
-      - "./storage:/photoprism/storage"                  # *Writable* storage folder for cache, database, and sidecar files (DO NOT REMOVE)
+      - ${DOCKER_CONFIGS_PATH}/photoprism_writable_storage:/photoprism/storage"                  # *Writable* storage folder for cache, database, and sidecar files (DO NOT REMOVE)
 
     environment:
       PHOTOPRISM_ADMIN_USER: "admin"                 # admin login username
@@ -106,6 +106,7 @@ services:
       - ${DOCKER_CONFIGS_PATH}/sonar:/config
       - ${SHOWS_FOLDER}:/tv #optional
       - ${MEDIA_FOLDER}:/downloads #optional
+      - ${RR_CUSTOM_SCRIPT_PATH}:/rr_custom_scripts
     ports:
       - ${SONARR_PORT}:8989
     restart: unless-stopped
@@ -122,6 +123,7 @@ services:
       - ${DOCKER_CONFIGS_PATH}/radar:/config
       - ${MOVIES_FOLDER}:/movies # optional 
       - ${MEDIA_FOLDER}:/downloads  # optional
+      - ${RR_CUSTOM_SCRIPT_PATH}:/rr_custom_scripts
     ports:
       - ${RADARR_PORT}:7878
     restart: unless-stopped

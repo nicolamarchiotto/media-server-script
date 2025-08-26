@@ -1,3 +1,3 @@
 
-mkdir ~/hdd_1
-mkdir ~/dockers_configs
+mkdir -p ~/hdd_1
+mkdir -p ~/dockers_configs

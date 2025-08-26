@@ -10,8 +10,6 @@ with open(env_file_path, "r") as file:
         value = value.strip()
         config_values[key] = value
 
-print(config_values)
-
 homer_file_path = "homer-config/assets/config.yml"
 
 with open(homer_file_path, "r") as file:
@@ -42,7 +40,7 @@ if "services" in data:
                         service["url"] = str(config_values["PIHOLE_URL"])
                     elif name == "NPM":
                         service["url"] = str(config_values["NPM_URL"])
-                    elif name == "urbackup":
+                    elif name == "UrBackup":
                         service["url"] = str(config_values["URBACKUP_URL"])
                     else:
                         print("Unmanaged case, exit", name)
@@ -50,3 +48,5 @@ if "services" in data:
                     
 with open(homer_file_path, "w") as file:
     yaml.dump(data, file)
+
+print("Edit homer config succesful")
