@@ -1,23 +1,32 @@
 #!/bin/sh
+#
+# Unified Telegram notifier for Sonarr & Radarr
+#
 
-# === CONFIGURE THESE ===
+# === CONFIGURATION ===
 BOT_TOKEN="YOUR_BOT_TOKEN_HERE"
 CHAT_ID="YOUR_CHAT_ID_HERE"
 
+# === Helpers ===
+
 send_message() {
-    TEXT="$1"
+    local TEXT="$1"
     curl -s -X POST "https://api.telegram.org/bot${BOT_TOKEN}/sendMessage" \
          -d chat_id="$CHAT_ID" \
          -d text="$TEXT" >/dev/null
 }
 
-# helper: bytes → GB (1 decimal place)
+# Convert bytes → GB with 1 decimal
 to_gb() {
-    awk -v size="$1" 'BEGIN { printf "%.1f", size/1024/1024/1024 }'
+    local BYTES="$1"
+    if [ -z "$BYTES" ] || [ "$BYTES" -le 0 ] 2>/dev/null; then
+        echo "0.0"
+    else
+        awk -v size="$BYTES" 'BEGIN { printf "%.1f", size/1024/1024/1024 }'
+    fi
 }
 
-
-# === Detect if called by Sonarr or Radarr ===
+# === Detect Caller ===
 if [ -n "$sonarr_eventtype" ]; then
     APP="Sonarr"
     EVENT="$sonarr_eventtype"
@@ -29,62 +38,80 @@ else
     exit 1
 fi
 
-# === Handle Sonarr events ===
+# === SONARR HANDLER ===
 if [ "$APP" = "Sonarr" ]; then
     case "$EVENT" in
       Test)
         send_message "✅ Sonarr Telegram script test successful!"
         ;;
+
       Grab)
         SIZE_GB=$(to_gb "$sonarr_release_size")
-        MESSAGE="📥 [Sonarr] New release grabbed!
+        MESSAGE="📥 [Sonarr] New release grabbed
 
 📺 Series: $sonarr_series_title
 💾 Release: $sonarr_release_title
 🌐 Indexer: $sonarr_release_indexer
 📦 Size: ${SIZE_GB} GB"
+        if [ -n "$sonarr_series_imdbid" ]; then
+            MESSAGE="$MESSAGE
+🔗 IMDb: https://www.imdb.com/title/${sonarr_series_imdbid}"
+        fi
         send_message "$MESSAGE"
         ;;
+
       Download)
         SIZE_GB=$(to_gb "$sonarr_episodefile_size")
-        MESSAGE="✅ [Sonarr] Download completed and imported!
+        SEASON="S$(printf "%02d" "$sonarr_episodefile_seasonnumber")"
+        EPS="E$(printf "%02d" "$sonarr_episodefile_episodenumbers")"
+        MESSAGE="✅ [Sonarr] Episode imported
 
 📺 Series: $sonarr_series_title
-🎬 Episode: $sonarr_episodefile_episodetitles
+🎬 Episode: ${SEASON}${EPS} - $sonarr_episodefile_episodetitles
 💾 File: $sonarr_episodefile_relativepath
-🌐 Indexer: $sonarr_release_indexer
 📦 Size: ${SIZE_GB} GB"
+        if [ -n "$sonarr_series_imdbid" ]; then
+            MESSAGE="$MESSAGE
+🔗 IMDb: https://www.imdb.com/title/${sonarr_series_imdbid}"
+        fi
         send_message "$MESSAGE"
         ;;
     esac
 fi
 
-# === Handle Radarr events ===
+# === RADARR HANDLER ===
 if [ "$APP" = "Radarr" ]; then
     case "$EVENT" in
       Test)
         send_message "✅ Radarr Telegram script test successful!"
         ;;
+
       Grab)
         SIZE_GB=$(to_gb "$radarr_release_size")
-        MESSAGE="📥 [Radarr] New movie grabbed!
+        MESSAGE="📥 [Radarr] New movie grabbed
 
-🎬 Title: $radarr_movie_title
-📅 Year: $radarr_movie_year
+🎬 Title: $radarr_movie_title ($radarr_movie_year)
 💾 Release: $radarr_release_title
 🌐 Indexer: $radarr_release_indexer
 📦 Size: ${SIZE_GB} GB"
+        if [ -n "$radarr_movie_imdbid" ]; then
+            MESSAGE="$MESSAGE
+🔗 IMDb: https://www.imdb.com/title/${radarr_movie_imdbid}"
+        fi
         send_message "$MESSAGE"
         ;;
+
       Download)
         SIZE_GB=$(to_gb "$radarr_moviefile_size")
-        MESSAGE="✅ [Radarr] Movie download completed and imported!
+        MESSAGE="✅ [Radarr] Movie imported
 
-🎬 Title: $radarr_movie_title
-📅 Year: $radarr_movie_year
+🎬 Title: $radarr_movie_title ($radarr_movie_year)
 💾 File: $radarr_moviefile_relativepath
-🌐 Indexer: $radarr_release_indexer
 📦 Size: ${SIZE_GB} GB"
+        if [ -n "$radarr_movie_imdbid" ]; then
+            MESSAGE="$MESSAGE
+🔗 IMDb: https://www.imdb.com/title/${radarr_movie_imdbid}"
+        fi
         send_message "$MESSAGE"
         ;;
     esac
