@@ -1,7 +1,4 @@
 venv
-storage
-database
 .env
 homer-config/assets/config.yml
 homer-config/assets/backup.yml
-rr_custom_scripts/rr_telegram_notifier.sh

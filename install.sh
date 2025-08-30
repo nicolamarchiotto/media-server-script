@@ -3,9 +3,6 @@ echo
 echo Server install script
 echo
 
-./subscripts/folders.sh
-
-
 sudo ./subscripts/program_shutdown.sh
 sudo systemctl daemon-reload
 

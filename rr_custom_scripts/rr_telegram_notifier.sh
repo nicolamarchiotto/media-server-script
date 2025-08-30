@@ -3,9 +3,13 @@
 # Unified Telegram notifier for Sonarr & Radarr
 #
 
-# === CONFIGURATION ===
-BOT_TOKEN="YOUR_BOT_TOKEN_HERE"
-CHAT_ID="YOUR_CHAT_ID_HERE"
+BOT_TOKEN="${RR_NOTIFICATOR_TELEGRAM_BOT_TOKEN}"
+CHAT_ID="${RR_NOTIFICATOR_TELEGRAM_CHAT_ID}"
+
+if [ -z "$BOT_TOKEN" ] || [ -z "$CHAT_ID" ]; then
+    echo "❌ ERROR: BOT_TOKEN or CHAT_ID not set!"
+    exit 1
+fi
 
 # === Helpers ===
 
@@ -16,7 +20,7 @@ send_message() {
          -d text="$TEXT" >/dev/null
 }
 
-# Convert bytes → GB with 1 decimal
+# Convert bytes → GB with 1 decimal (used only for Grab events)
 to_gb() {
     local BYTES="$1"
     if [ -z "$BYTES" ] || [ "$BYTES" -le 0 ] 2>/dev/null; then
@@ -61,15 +65,14 @@ if [ "$APP" = "Sonarr" ]; then
         ;;
 
       Download)
-        SIZE_GB=$(to_gb "$sonarr_episodefile_size")
         SEASON="S$(printf "%02d" "$sonarr_episodefile_seasonnumber")"
-        EPS="E$(printf "%02d" "$sonarr_episodefile_episodenumbers")"
+        EPS="E$(printf "%02d" "$sonarr_episodefile_episodenumber")"
+
         MESSAGE="✅ [Sonarr] Episode imported
 
 📺 Series: $sonarr_series_title
 🎬 Episode: ${SEASON}${EPS} - $sonarr_episodefile_episodetitles
-💾 File: $sonarr_episodefile_relativepath
-📦 Size: ${SIZE_GB} GB"
+💾 File: $sonarr_episodefile_relativepath"
         if [ -n "$sonarr_series_imdbid" ]; then
             MESSAGE="$MESSAGE
 🔗 IMDb: https://www.imdb.com/title/${sonarr_series_imdbid}"
@@ -102,12 +105,10 @@ if [ "$APP" = "Radarr" ]; then
         ;;
 
       Download)
-        SIZE_GB=$(to_gb "$radarr_moviefile_size")
         MESSAGE="✅ [Radarr] Movie imported
 
 🎬 Title: $radarr_movie_title ($radarr_movie_year)
-💾 File: $radarr_moviefile_relativepath
-📦 Size: ${SIZE_GB} GB"
+💾 File: $radarr_moviefile_relativepath"
         if [ -n "$radarr_movie_imdbid" ]; then
             MESSAGE="$MESSAGE
 🔗 IMDb: https://www.imdb.com/title/${radarr_movie_imdbid}"
