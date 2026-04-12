@@ -207,6 +207,7 @@ services:
       INITIAL_ADMIN_EMAIL: admin@example.com
       INITIAL_ADMIN_PASSWORD: mypassword1
       
+  # URBACKUP
   urbackup:
     image: uroni/urbackup-server:latest
     container_name: urbackup
@@ -220,7 +221,22 @@ services:
     volumes:
       - ${DOCKER_CONFIGS_PATH}/urbackup:/var/urbackup
       - ${URBACKUPS_PATH}:/backups
-    network_mode: "host"
+
+  # TAILSCALE
+  tailscaled:
+    image: tailscale/tailscale:latest
+    container_name: tailscaled
+    network_mode: host
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    environment:
+      - TS_AUTHKEY=${TAILSCALE_AUTH_KEY}
+      - TS_EXTRA_ARGS=--accept-routes --accept-dns=false
+    volumes:
+      - /var/lib:/var/lib
+      - /dev/net/tun:/dev/net/tun
+    restart: unless-stopped
 
 networks:
   default:

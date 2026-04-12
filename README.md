@@ -180,3 +180,9 @@ location /admin {
 }
 ```
 
+# Tailscale
+- To generate auth key go to https://login.tailscale.com/admin/settings/keys.
+- Test connection
+  - docker exec tailscaled tailscale --socket /tmp/tailscaled.sock status
+- To get login link:
+  - docker exec -it tailscaled tailscale up --reset
