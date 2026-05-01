@@ -42,6 +42,8 @@ if "services" in data:
                         service["url"] = str(config_values["NPM_URL"])
                     elif name == "UrBackup":
                         service["url"] = str(config_values["URBACKUP_URL"])
+                    elif name == "Shutdown Manager":
+                        service["url"] = str(config_values["SHUTDOWN_URL"])
                     else:
                         print("Unmanaged case, exit", name)
                         exit()

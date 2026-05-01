@@ -62,6 +62,9 @@ services:
   - logo: assets/tools/pihole.png
     name: Pihole
     url: https://pihole.ziapo.duckdns.org
+  - logo: assets/tools/on-off-button.png
+    name: Shutdown Manager
+    url: https://shutdown.ziapo.duckdns.org
   name: Networking
 - icon: fas fa-database
   items:

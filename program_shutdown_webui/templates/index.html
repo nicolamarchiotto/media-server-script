@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Shutdown Manager</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" integrity="sha384-..." crossorigin="anonymous">
+    <link rel="stylesheet" href="/static/style.css">
+  </head>
+  <body>
+    <div class="container py-2">
+      <div class="text-center mb-2">
+        <h1 class="h1">Shutdown Manager</h1>
+      </div>
+
+      <div class="card mb-2">
+        <div class="card-body py-1 px-2">
+          <div class="row g-1">
+            <div class="col-12">
+              <div class="info-item position-relative d-flex align-items-center gap-2 flex-wrap">
+                <button type="button" class="btn btn-link p-0 info-btn" data-overlay-id="installed-info" aria-label="Installed info" aria-expanded="false">
+                  <strong>Service installed:</strong>
+                </button>
+                <span>{{ service_exists and 'Yes' or 'No' }}</span>
+                <div class="info-overlay" id="installed-info">
+                  Service installed means the shutdown service and its script are present on this system.
+                </div>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="info-item position-relative d-flex align-items-center gap-2 flex-wrap">
+                <button type="button" class="btn btn-link p-0 info-btn" data-overlay-id="enabled-info" aria-label="Enabled info" aria-expanded="false">
+                  <strong>Service status:</strong>
+                </button>
+                <span>{{ status.enabled }}</span>
+                <div class="info-overlay" id="enabled-info">
+                  Enabled means the service is configured to start automatically at boot.
+                </div>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="info-item position-relative d-flex align-items-center gap-2 flex-wrap">
+                <button type="button" class="btn btn-link p-0 info-btn" data-overlay-id="active-info" aria-label="Active info" aria-expanded="false">
+                  <strong>Scheduled shutdown time:</strong>
+                </button>
+                <span>{{ active_shutdown_time }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row g-2">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-body py-2 px-2">
+              <form method="post" id="service-form">
+                <div class="row gy-1 mb-2">
+                  <div class="col-6">
+                    <button type="submit" name="action" value="enable" class="btn btn-success btn-sm w-100">Enable service</button>
+                  </div>
+                  <div class="col-6">
+                    <button type="submit" name="action" value="disable" class="btn btn-outline-secondary btn-sm w-100">Disable service</button>
+                  </div>
+                  <div class="col-6">
+                    <button type="submit" name="action" value="start" class="btn btn-primary btn-sm w-100">Start service</button>
+                  </div>
+                  <div class="col-6">
+                    <button type="submit" name="action" value="stop" class="btn btn-warning btn-sm w-100">Stop service</button>
+                  </div>
+                  <div class="col-6">
+                    <button type="submit" name="action" value="cancel" class="btn btn-danger btn-sm w-100">Cancel scheduled shutdown</button>
+                  </div>
+                  <div class="col-6">
+                    <button type="submit" name="action" value="shutdown_in_minute" class="btn btn-secondary btn-sm w-100">Shutdown system in 1 minute</button>
+                  </div>
+                </div>
+              </form>
+              <div class="row gy-1">
+                <div class="col-12"><strong>Edit service shutdown time:</strong></div>
+                <div class="col-12">
+                  <form method="post" class="row g-1" id="edit-script-form">
+                    <div class="col-8">
+                      <input type="text" class="form-control form-control-sm" id="script_time" name="script_time" placeholder="HH:MM" value="{{ scheduled_time if scheduled_time != 'None' else '' }}" required>
+                    </div>
+                    <div class="col-4">
+                      <button type="submit" name="action" value="edit_script" class="btn btn-primary btn-sm w-100">Save</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+              <hr class="my-2">
+              <div class="row gy-1">
+                <div class="col-12"><strong>Reschedule active shutdown:</strong></div>
+                <div class="col-12">
+                  <form method="post" class="row g-1" id="reschedule-form">
+                    <div class="col-8">
+                      <input type="text" class="form-control form-control-sm" id="schedule_time" name="schedule_time" placeholder="HH:MM" required>
+                    </div>
+                    <div class="col-4">
+                      <button type="submit" name="action" value="reschedule" class="btn btn-primary btn-sm w-100">Set</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      </div>
+    </div>
+
+    <!-- Alert container at bottom -->
+    <div class="alert-container">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        {% endfor %}
+      {% endif %}
+      {% endwith %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-..." crossorigin="anonymous"></script>
+    <script>
+      // Auto-dismiss alerts after 3 seconds
+      setTimeout(function() {
+        var alerts = document.querySelectorAll('.alert-container .alert');
+        alerts.forEach(function(alert) {
+          var bsAlert = new bootstrap.Alert(alert);
+          bsAlert.close();
+        });
+      }, 3000);
+
+      document.addEventListener('DOMContentLoaded', function() {
+        var infoButtons = document.querySelectorAll('.info-btn');
+
+        function closeAllOverlays() {
+          document.querySelectorAll('.info-overlay.show').forEach(function(overlay) {
+            overlay.classList.remove('show');
+            var button = document.querySelector('[data-overlay-id="' + overlay.id + '"]');
+            if (button) {
+              button.setAttribute('aria-expanded', 'false');
+            }
+          });
+        }
+
+        infoButtons.forEach(function(button) {
+          button.addEventListener('click', function(event) {
+            event.stopPropagation();
+            var overlay = document.getElementById(button.dataset.overlayId);
+            if (!overlay) {
+              return;
+            }
+
+            var willShow = !overlay.classList.contains('show');
+            closeAllOverlays();
+            if (willShow) {
+              overlay.classList.add('show');
+              button.setAttribute('aria-expanded', 'true');
+            } else {
+              overlay.classList.remove('show');
+              button.setAttribute('aria-expanded', 'false');
+            }
+          });
+        });
+
+        document.addEventListener('click', function() {
+          closeAllOverlays();
+        });
+
+        document.querySelectorAll('.info-overlay').forEach(function(overlay) {
+          overlay.addEventListener('click', function(event) {
+            event.stopPropagation();
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

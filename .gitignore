@@ -2,3 +2,4 @@ venv
 .env
 homer-config/assets/config.yml
 homer-config/assets/backup.yml
+__pycache__/
