@@ -6,7 +6,7 @@
     <title>Shutdown Manager</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" integrity="sha384-..." crossorigin="anonymous">
     <link rel="stylesheet" href="/static/style.css">
-  </head>
+    <link rel="icon" href="{{ url_for('static', filename='power.png') }}" type="image/png">  </head>
   <body>
     <div class="container py-2">
       <div class="text-center mb-2">
@@ -46,6 +46,14 @@
                 <span>{{ active_shutdown_time }}</span>
               </div>
             </div>
+            <div class="col-12">
+              <div class="info-item position-relative d-flex align-items-center gap-2 flex-wrap">
+                <button type="button" class="btn btn-link p-0 info-btn" data-overlay-id="active-info" aria-label="Active info" aria-expanded="false">
+                  <strong>Scheduled reboot time:</strong>
+                </button>
+                <span>{{ active_reboot_time }}</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -55,26 +63,45 @@
           <div class="card">
             <div class="card-body py-2 px-2">
               <form method="post" id="service-form">
+                <div class="container py-2 app-container">
                 <div class="row gy-1 mb-2">
-                  <div class="col-6">
-                    <button type="submit" name="action" value="enable" class="btn btn-success btn-sm w-100">Enable service</button>
+                  <div class="col-6 d-flex">
+                    <button type="submit" name="action" value="enable" class="btn btn-success btn-sm w-100 text-nowrap">
+                      Enable service
+                    </button>
                   </div>
-                  <div class="col-6">
-                    <button type="submit" name="action" value="disable" class="btn btn-outline-secondary btn-sm w-100">Disable service</button>
+                  <div class="col-6 d-flex">
+                    <button type="submit" name="action" value="disable" class="btn btn-secondary btn-sm w-100 text-nowrap">
+                      Disable service
+                    </button>
                   </div>
-                  <div class="col-6">
-                    <button type="submit" name="action" value="start" class="btn btn-primary btn-sm w-100">Start service</button>
+                  <div class="col-6 d-flex">
+                    <button type="submit" name="action" value="start" class="btn btn-primary btn-sm w-100 text-nowrap">
+                      Start service
+                    </button>
                   </div>
-                  <div class="col-6">
-                    <button type="submit" name="action" value="stop" class="btn btn-warning btn-sm w-100">Stop service</button>
+                  <div class="col-6 d-flex">
+                    <button type="submit" name="action" value="stop" class="btn btn-warning btn-sm w-100 text-nowrap">
+                      Stop service
+                    </button>
                   </div>
-                  <div class="col-6">
-                    <button type="submit" name="action" value="cancel" class="btn btn-danger btn-sm w-100">Cancel scheduled shutdown</button>
+                  <div class="col-6 d-flex">
+                    <button type="submit" name="action" value="reboot_in_a_minute" class="btn btn-danger btn-sm w-100 text-nowrap">
+                      Reboot in 1 minute
+                    </button>
                   </div>
-                  <div class="col-6">
-                    <button type="submit" name="action" value="shutdown_in_minute" class="btn btn-secondary btn-sm w-100">Shutdown system in 1 minute</button>
+                  <div class="col-6 d-flex">
+                    <button type="submit" name="action" value="shutdown_in_minute" class="btn btn-danger btn-sm w-100 text-nowrap">
+                      Shutdown in 1 minute
+                    </button>
+                  </div>
+                  <div class="col-12 d-flex">
+                    <button type="submit" name="action" value="cancel" class="btn btn-outline-danger btn-sm w-100 text-nowrap">
+                      Cancel reboot and shutdown
+                    </button>
                   </div>
                 </div>
+              </div>
               </form>
               <div class="row gy-1">
                 <div class="col-12"><strong>Edit service shutdown time:</strong></div>

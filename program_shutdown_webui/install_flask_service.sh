@@ -24,7 +24,7 @@ After=network.target
 
 [Service]
 Type=simple
-User=hp
+User=root
 WorkingDirectory=$APP_DIR
 ExecStart=/usr/bin/python3 $APP_DIR/app.py
 Restart=always

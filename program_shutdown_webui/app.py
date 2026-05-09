@@ -1,3 +1,4 @@
+from datetime import datetime
 import os
 import re
 import subprocess
@@ -61,29 +62,21 @@ def update_script_shutdown_time(time_str: str) -> None:
 # 🔥 FIXED: RELIABLE 1-MINUTE SHUTDOWN (NO at DEPENDENCY)
 # ------------------------------------------------------------
 def shutdown_in_one_minute():
-    return run_command(["shutdown", "+1"])
-
+    return run_command(["sudo", "shutdown", "+1"])
 
 # ------------------------------------------------------------
 # AT SCHEDULER (HH:MM)
 # ------------------------------------------------------------
 def schedule_shutdown_at(time_str: str) -> tuple[str, str, int]:
     cancel_all_shutdowns()
-    return run_command(
-        ["at", time_str],
-        input_text="systemctl poweroff\n"
-    )
-
+    return run_command(["sudo", "shutdown", "-h", time_str])
 
 def cancel_all_shutdowns() -> None:
-    out, _, _ = run_command(["atq"])
+    run_command(["shutdown", "-c"])
 
-    for line in out.splitlines():
-        parts = line.split()
-        if parts:
-            job_id = parts[0]
-            run_command(["atrm", job_id])
-
+def reboot_in_a_minute():
+    cancel_all_shutdowns()
+    return run_command(["sudo", "shutdown", "-r", "+1"])
 
 # ------------------------------------------------------------
 # VALIDATION
@@ -110,21 +103,75 @@ def get_service_status() -> dict[str, str]:
 # ------------------------------------------------------------
 def get_active_shutdown_time() -> Optional[str]:
     try:
-        out, _, _ = run_command(["atq"])
+        with open("/run/systemd/shutdown/scheduled", "r") as f:
+            lines = f.readlines()
 
-        if not out:
+        usec = None
+
+        for line in lines:
+            if line.startswith("USEC="):
+                usec = int(line.split("=", 1)[1].strip())
+                break
+
+        if usec is None:
             return None
 
-        first = out.splitlines()[0].split()
+        # systemd stores time in microseconds
+        shutdown_dt = datetime.fromtimestamp(usec / 1_000_000)
 
-        if len(first) >= 5:
-            return first[4][:5]
-
-        return None
+        # return HH:MM format
+        return shutdown_dt.strftime("%H:%M")
 
     except Exception:
         return None
+    
+def get_scheduled_reboot_time() -> Optional[str]:
+    try:
+        with open("/run/systemd/shutdown/scheduled", "r") as f:
+            lines = f.readlines()
 
+        usec = None
+        mode = None
+
+        for line in lines:
+            if line.startswith("USEC="):
+                usec = int(line.split("=", 1)[1].strip())
+            elif line.startswith("MODE="):
+                mode = line.split("=", 1)[1].strip()
+
+        if usec is None or mode != "reboot":
+            return None
+
+        dt = datetime.fromtimestamp(usec / 1_000_000)
+        return dt.strftime("%H:%M")
+
+    except Exception:
+        return None
+    
+def get_scheduled_reboot_time_full() -> Optional[str]:
+    try:
+        with open("/run/systemd/shutdown/scheduled", "r") as f:
+            lines = f.readlines()
+
+        usec = None
+        mode = None
+
+        for line in lines:
+            if line.startswith("USEC="):
+                usec = int(line.split("=", 1)[1].strip())
+            elif line.startswith("MODE="):
+                mode = line.split("=", 1)[1].strip()
+
+        if usec is None or mode != "reboot":
+            return None
+
+        dt = datetime.fromtimestamp(usec / 1_000_000)
+
+        # IMPORTANT: return full datetime format systemd understands better
+        return dt.strftime("%H:%M")
+
+    except Exception:
+        return None
 
 # ------------------------------------------------------------
 # FLASK ROUTE
@@ -168,7 +215,6 @@ def index():
             # ---------------- CANCEL ALL ----------------
             elif action == "cancel":
                 cancel_all_shutdowns()
-                run_command(["shutdown", "-c"])
                 flash("All shutdowns canceled", "success")
 
             # ---------------- 🔥 1 MINUTE SHUTDOWN ----------------
@@ -194,6 +240,12 @@ def index():
                 else:
                     flash("Invalid time format", "warning")
 
+
+            # ---------------- REBOOT IN A MINUTE ----------------
+            elif action == "reboot_in_a_minute":
+                reboot_in_a_minute()
+                flash("Reboot in a minute", "success")
+
             # ---------------- EDIT SCRIPT ----------------
             elif action == "edit_script":
                 script_time = request.form.get("script_time", "").strip()
@@ -212,12 +264,14 @@ def index():
     # ---------------- GET ----------------
     status = get_service_status()
     active_shutdown_time = get_active_shutdown_time()
+    active_reboot_time = get_scheduled_reboot_time()
     scheduled_time = get_script_shutdown_time()
 
     return render_template(
         "index.html",
         status=status,
         active_shutdown_time=active_shutdown_time,
+        active_reboot_time=active_reboot_time,
         scheduled_time=scheduled_time
     )
 

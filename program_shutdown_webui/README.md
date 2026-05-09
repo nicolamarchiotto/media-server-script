@@ -1,16 +1,21 @@
 # Program Shutdown Web UI
 
-A small Flask application to manage `mystartup.service` and the automatic shutdown schedule.
+A small Flask application to manage `mystartup.service` and the scheduled shutdown time.
 
 ## Features
 
 - Enable or disable `mystartup.service`
-- Start or stop the service manually
-- Reschedule the shutdown time
-- Cancel a pending shutdown (`shutdown -c`)
-- Script for generating service which starts application at startup
+- Manually start or stop `mystartup.service`
+- Shutdown and reboot system in a minute
+- Cancel scheduled reboot and shutdown time
+- Change `mystartup.service` shutdown scheduled time  
+- Reschedule active shutdown time
 
-### Run app locally
+## Install
+
+- Run install_flask_service.sh, script for generating service which starts Flask app at startup
+
+### Debug
 
 ```bash
 sudo python3 app.py
