@@ -2,16 +2,60 @@ from datetime import datetime
 import os
 import re
 import subprocess
+from functools import wraps
 from pathlib import Path
 from typing import Optional
+from flask_login import (
+    LoginManager,
+    UserMixin,
+    login_user,
+    logout_user,
+    login_required,
+    current_user,
+)
 
-from flask import Flask, flash, redirect, render_template, request, url_for
+from dotenv import load_dotenv
+from flask import (
+    Flask,
+    flash,
+    redirect,
+    render_template,
+    request,
+    url_for,
+)
+
+
+# Load .env file
+load_dotenv()
 
 app = Flask(__name__)
-app.secret_key = os.environ.get("FLASK_SECRET_KEY", "change-this-secret-key")
+
+app.secret_key = os.environ.get("FLASK_SECRET_KEY")
+
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = "login"
+
+# Read credentials from .env
+
+APP_USERNAME = os.environ.get("APP_USERNAME")
+APP_PASSWORD = os.environ.get("APP_PASSWORD")
 
 SERVICE_NAME = "mystartup.service"
 SCRIPT_PATH = Path("/opt/mystartup.sh")
+
+# ------------------------------------------------------------
+# USER MODEL
+# ------------------------------------------------------------
+class User(UserMixin):
+    def __init__(self, user_id):
+        self.id = user_id
+
+@login_manager.user_loader
+def load_user(user_id):
+    if user_id == APP_USERNAME:
+        return User(user_id)
+    return None
 
 # ------------------------------------------------------------
 # VALIDATION
@@ -58,9 +102,6 @@ def update_script_shutdown_time(time_str: str) -> None:
     SCRIPT_PATH.chmod(0o755)
 
 
-# ------------------------------------------------------------
-# 🔥 FIXED: RELIABLE 1-MINUTE SHUTDOWN (NO at DEPENDENCY)
-# ------------------------------------------------------------
 def shutdown_in_one_minute():
     return run_command(["sudo", "shutdown", "+1"])
 
@@ -174,9 +215,41 @@ def get_scheduled_reboot_time_full() -> Optional[str]:
         return None
 
 # ------------------------------------------------------------
-# FLASK ROUTE
+# LOGIN
+# ------------------------------------------------------------
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if current_user.is_authenticated:
+        return redirect(url_for("index"))
+
+    if request.method == "POST":
+        username = request.form.get("username", "").strip()
+        password = request.form.get("password", "").strip()
+
+        if username == APP_USERNAME and password == APP_PASSWORD:
+            user = User(username)
+            login_user(user)
+
+            flash("Login successful", "success")
+            return redirect(url_for("index"))
+
+        flash("Invalid username or password", "danger")
+
+    return render_template("login.html")
+
+
+@app.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    flash("Logged out", "success")
+    return redirect(url_for("login"))
+
+# ------------------------------------------------------------
+# FLASK ROUTES
 # ------------------------------------------------------------
 @app.route("/", methods=["GET", "POST"])
+@login_required
 def index():
     if request.method == "POST":
         action = request.form.get("action", "")

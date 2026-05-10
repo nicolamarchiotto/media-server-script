@@ -15,6 +15,17 @@
 
       <div class="card mb-2">
         <div class="card-body py-1 px-2">
+          <button type="button"
+              onclick="window.location.href='{{ url_for('logout') }}'"
+              class="position-absolute border-0 bg-transparent p-0"
+              style="top: 6px; right: 8px; width: 36px; height: 36px; z-index: 9999;"
+              aria-label="Logout"
+              title="Logout">
+
+            <img src="{{ url_for('static', filename='logout.svg') }}"
+                alt="Logout"
+                style="width: 100%; height: 100%; display: block; pointer-events: none; filter: brightness(0);">
+          </button>
           <div class="row g-1">
             <div class="col-12">
               <div class="info-item position-relative d-flex align-items-center gap-2 flex-wrap">
