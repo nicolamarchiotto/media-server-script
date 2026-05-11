@@ -29,17 +29,6 @@
           <div class="row g-1">
             <div class="col-12">
               <div class="info-item position-relative d-flex align-items-center gap-2 flex-wrap">
-                <button type="button" class="btn btn-link p-0 info-btn" data-overlay-id="installed-info" aria-label="Installed info" aria-expanded="false">
-                  <strong>Service installed:</strong>
-                </button>
-                <span>{{ service_exists and 'Yes' or 'No' }}</span>
-                <div class="info-overlay" id="installed-info">
-                  Service installed means the shutdown service and its script are present on this system.
-                </div>
-              </div>
-            </div>
-            <div class="col-12">
-              <div class="info-item position-relative d-flex align-items-center gap-2 flex-wrap">
                 <button type="button" class="btn btn-link p-0 info-btn" data-overlay-id="enabled-info" aria-label="Enabled info" aria-expanded="false">
                   <strong>Service status:</strong>
                 </button>

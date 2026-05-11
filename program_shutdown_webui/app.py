@@ -131,11 +131,9 @@ def validate_time(value: str) -> bool:
 # SERVICE STATUS
 # ------------------------------------------------------------
 def get_service_status() -> dict[str, str]:
-    active_out, _, _ = run_command(["systemctl", "is-active", SERVICE_NAME])
     enabled_out, _, _ = run_command(["systemctl", "is-enabled", SERVICE_NAME])
 
     return {
-        "active": active_out or "inactive",
         "enabled": enabled_out or "disabled",
     }
 
